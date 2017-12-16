@@ -1,0 +1,4 @@
+GMAIL_BOX_USERNAME: 'sihcpro@gmail.com'
+GMAIL_BOX_PASSWORD: '19963105'
+FE_HOST: 'localhost:4200'
+# DATABASE_URL: 'postgres://ljtikwcambzosv:d4b56654e274b9bb8e492d3924465e7d0c3ead4ad68267b9d916b2b0e4dbe483@ec2-107-20-250-195.compute-1.amazonaws.com:5432/d4v4n874laksd9'
