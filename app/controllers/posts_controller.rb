@@ -18,9 +18,11 @@ class PostsController < ApplicationController
   def show
     @post = Post.find_by(id: params[:id])
     render json:  if @post.nil?
+                    # @all_tag =
                     { message: 'Not found', status: 404 }
                   else
-                    { postContent: @post.content, name: @post.name, status: 200 }
+                    { postContent: @post.content, name: @post.postname,
+                      tag: @post.tags.select(:id, :tagname), status: 200 }
                   end
   end
 
