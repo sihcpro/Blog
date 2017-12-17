@@ -3,28 +3,24 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  def new
-    @user = User.new
-  end
-
   def create
     @user = User.new(user_create_params)
-    # @confirm = Confirm.new(token: SecureRandom.urlsafe_base64.to_s)
-
-    message = if @user.save
-                { message: 'Create account success!', status: 201 }
+    message = if !user.find_by(id: params[:email]).nil?
+                { message: 'Conflict', status: 409 }
+              elsif @user.save
+                { message: 'Created', status: 201 }
               else
-                { message: user.errors.full_messages, status: 409 }
+                { message: user.errors.full_messages, status: 404 }
               end
     render json: message
   end
 
   def show
-    user = current_user
+    user = User.find_by(user_id_params)
     if user
       render json: user, serializer: Users::ShowSerializer
     else
-      render json: { message: 'Not found user!', status: 404 }
+      render json: { message: 'Not found', status: 404 }
     end
   end
 
@@ -32,12 +28,12 @@ class UsersController < ApplicationController
     user = current_user
     message = if user
                 if user.update(user_update_params)
-                  { message: 'Update successed!', status: 202 }
+                  { message: 'Accepted', status: 202 }
                 else
-                  { message: 'Update failt!', status: 409 }
+                  { message: 'Failed', status: 406 }
                 end
               else
-                { message: 'Not found user!', status: 404 }
+                { message: 'Not found', status: 404 }
               end
     message['errors'] = user.errors.full_messages
     render json: message
@@ -49,11 +45,15 @@ class UsersController < ApplicationController
 
   private
 
+  def user_id_params
+    params.permit(:id)
+  end
+
   def user_create_params
     params.permit(:user_name, :email, :gender, :password, :role)
   end
 
   def user_update_params
-    params.permit(:user_name, :email, :gender, :password)
+    params.permit(:user_name, :gender)
   end
 end
