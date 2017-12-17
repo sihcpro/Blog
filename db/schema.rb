@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20171217050756) do
     t.string "password_digest"
     t.integer "gender"
     t.integer "role", default: 0
+    t.string "auth_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

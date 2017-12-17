@@ -5,12 +5,12 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_create_params)
-    message = if !user.find_by(id: params[:email]).nil?
+    message = if !User.find_by(user_email_params).nil?
                 { message: 'Conflict', status: 409 }
               elsif @user.save
                 { message: 'Created', status: 201 }
               else
-                { message: user.errors.full_messages, status: 404 }
+                { message: @user.errors.full_messages, status: 404 }
               end
     render json: message
   end
@@ -47,6 +47,10 @@ class UsersController < ApplicationController
 
   def user_id_params
     params.permit(:id)
+  end
+
+  def user_email_params
+    params.permit(:email)
   end
 
   def user_create_params
