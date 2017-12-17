@@ -11,9 +11,9 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    user = current_user
-    message = if user
-                user.update_columns(auth_token: nil)
+    @user = current_user
+    message = if @user
+                @user.update_columns(auth_token: nil)
                 { message: 'You logged out!', status: 200 }
               else
                 { message: 'Invalid user!', status: 404 }

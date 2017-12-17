@@ -16,8 +16,11 @@ ActiveRecord::Schema.define(version: 20171217050756) do
   enable_extension "plpgsql"
 
   create_table "posts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
