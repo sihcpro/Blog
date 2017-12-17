@@ -5,8 +5,3 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
-puts 'Created Admin' if User.new(username: "Bang", email: "equal@gmail.com", password: "123456", gender: 0, role: 2, created_at: Time.now).save
-puts 'created Test'  if User.new(username: "Test", email: "a@b.c", password: "123456").save
-
-

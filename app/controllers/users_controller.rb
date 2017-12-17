@@ -3,38 +3,41 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+  def new
+    @user = User.new
+  end
+
   def create
     @user = User.new(user_create_params)
-    message = if !User.find_by(user_email_params).nil?
-                { message: 'Conflict', status: 409 }
-              elsif @user.save
-                { message: 'Created', status: 201 }
+    # @confirm = Confirm.new(token: SecureRandom.urlsafe_base64.to_s)
+
+    message = if @user.save
+                { message: 'Create account success!', status: 201 }
               else
-                { message: @user.errors.full_messages, status: 404 }
+                { message: user.errors.full_messages, status: 409 }
               end
     render json: message
   end
 
   def show
-    @user = User.find_by(user_id_params)
-    render json:  if @user
-                    { username: @user.username, gender: @user.gender, role: @user.role,
-                      email: @user.email, status: 200 }
-                  else
-                    { message: 'Not found', status: 404 }
-                  end
+    user = current_user
+    if user
+      render json: user, serializer: Users::ShowSerializer
+    else
+      render json: { message: 'Not found user!', status: 404 }
+    end
   end
 
   def update
     user = current_user
     message = if user
                 if user.update(user_update_params)
-                  { message: 'Accepted', status: 202 }
+                  { message: 'Update successed!', status: 202 }
                 else
-                  { message: 'Failed', status: 406 }
+                  { message: 'Update failt!', status: 409 }
                 end
               else
-                { message: 'Not found', status: 404 }
+                { message: 'Not found user!', status: 404 }
               end
     message['errors'] = user.errors.full_messages
     render json: message
@@ -46,19 +49,11 @@ class UsersController < ApplicationController
 
   private
 
-  def user_id_params
-    params.permit(:id)
-  end
-
-  def user_email_params
-    params.permit(:email)
-  end
-
   def user_create_params
-    params.permit(:username, :email, :gender, :password, :role)
+    params.permit(:user_name, :email, :gender, :password, :role)
   end
 
   def user_update_params
-    params.permit(:username, :gender)
+    params.permit(:user_name, :email, :gender, :password)
   end
 end

@@ -1,8 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
-  validates :username, :password, :email, presence: true
-  validates :email, uniqueness: { case_sensitive: false }
-
+  validates :user_name, :password, presence: true, on: create
   # validate  :birthday?
 
   enum role: ['học sinh', 'giáo viên', 'quản trị viên']
