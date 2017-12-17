@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20171217050756) do
 
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id"
+    t.string "name"
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -24,7 +25,7 @@ ActiveRecord::Schema.define(version: 20171217050756) do
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
-    t.string "user_name"
+    t.string "username"
     t.string "email"
     t.string "password_digest"
     t.integer "gender"

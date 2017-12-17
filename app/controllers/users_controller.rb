@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   def show
     user = User.find_by(user_id_params)
     if user
-      render json: user, serializer: Users::ShowSerializer
+      render json: user, serializer: Users::ShowUserSerializer
     else
       render json: { message: 'Not found', status: 404 }
     end
@@ -54,10 +54,10 @@ class UsersController < ApplicationController
   end
 
   def user_create_params
-    params.permit(:user_name, :email, :gender, :password, :role)
+    params.permit(:username, :email, :gender, :password, :role)
   end
 
   def user_update_params
-    params.permit(:user_name, :gender)
+    params.permit(:username, :gender)
   end
 end

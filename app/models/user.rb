@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
-  validates :user_name, :password, :email, presence: true
+  validates :username, :password, :email, presence: true
   validates :email, uniqueness: { case_sensitive: false }
 
   # validate  :birthday?
