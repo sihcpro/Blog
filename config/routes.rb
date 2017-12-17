@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   post '/register', to: 'users#create', as: 'register'
   post '/login', to: 'sessions#create', as: 'login'
   delete '/logout', to: 'sessions#destroy', as: 'logout'
-  resources :posts
+  resources :posts, only: %i[create show]
+  resources :tags, only: :show
 end
