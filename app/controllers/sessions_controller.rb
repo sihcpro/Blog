@@ -1,7 +1,6 @@
 class SessionsController < ApplicationController
   def create
     @user = User.find_by(email_params)
-    binding.pry
     message = if @user && @user.authenticate(params[:password])
                 @user.update_columns(auth_token: SecureRandom.hex)
                 { auth_token: @user.auth_token, status: 200 }
