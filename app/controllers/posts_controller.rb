@@ -1,11 +1,13 @@
 class PostsController < ApplicationController
   def create
     @user = current_user
+    @tag = params[:tagList]
     render json:  if @user.nil?
                     { message: 'Invalid user', status: 404 }
                   else
                     @post = Post.new(user_id: @user.id, content: params[:postContent])
-                    if @post.save
+                    if !@tag.nil? && @post.save
+                      make_tag(@tag, @post.id)
                       { id: @post.id, status: 202 }
                     else
                       { message: 'Forbidden', status: 403 }
@@ -15,12 +17,24 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find_by(id: params[:id])
-    if @post.nil?
-      render json: { message: 'Not found', status: 404 }
-    else
-      render json: { postContent: @post.content, name: @post.name, status: 200 }
-    end
+    render json:  if @post.nil?
+                    { message: 'Not found', status: 404 }
+                  else
+                    { postContent: @post.content, name: @post.name, status: 200 }
+                  end
+  end
 
-    # binding.pry
+  private
+
+  def make_tag(tag, post_id)
+    @tag = tag.split(',')
+    @tag.each do |t|
+      tag_id = if Tag.find_by(tagname: t).nil?
+                 Tag.create(tagname: t).id
+               else
+                 Tag.find_by(tagname: t).id
+               end
+      TagPost.create(tag_id: tag_id, post_id: post_id)
+    end
   end
 end

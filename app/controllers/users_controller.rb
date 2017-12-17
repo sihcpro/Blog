@@ -16,12 +16,13 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = User.find_by(user_id_params)
-    if user
-      render json: user, serializer: Users::ShowUserSerializer
-    else
-      render json: { message: 'Not found', status: 404 }
-    end
+    @user = User.find_by(user_id_params)
+    render json:  if @user
+                    { username: @user.username, gender: @user.gender, role: @user.role,
+                      email: @user.email, status: 200 }
+                  else
+                    { message: 'Not found', status: 404 }
+                  end
   end
 
   def update

@@ -26,5 +26,4 @@ class SessionsController < ApplicationController
   def email_params
     params.permit(:email)
   end
-
 end
